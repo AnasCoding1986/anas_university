@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from "./student.service";
 
 
-const getAllStudent = async (req:Request, res:Response) => {
+const getAllStudent = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const result = await StudentServices.getAllStudent();
         res.status(200).json({
@@ -11,11 +11,11 @@ const getAllStudent = async (req:Request, res:Response) => {
             data: result
         })
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
-const getSingleStudent = async (req:Request, res:Response) => {
+const getSingleStudent = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const { id } = req.params;
         const result = await StudentServices.getSingleStudent(id);
@@ -25,7 +25,7 @@ const getSingleStudent = async (req:Request, res:Response) => {
             data: result
         })
     } catch (error) {
-        console.log(error);
+        next(error);
     }
 }
 
