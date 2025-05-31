@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { StudentServices } from "./student.service";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
 
-const getAllStudent = async (req:Request, res:Response, next:NextFunction) => {
-    try {
+const getAllStudent = catchAsync(async (req:Request, res:Response) => {
         const result = await StudentServices.getAllStudent();
         sendResponse(res, {
             statusCode: httpStatus.OK,
@@ -14,15 +14,11 @@ const getAllStudent = async (req:Request, res:Response, next:NextFunction) => {
             data: result,
         }
         )
-        }
-     catch (error) {
-        next(error);
-    }
-}
+})
 
 
-const getSingleStudent = async (req:Request, res:Response, next:NextFunction) => {
-    try {
+const getSingleStudent = catchAsync(async (req:Request, res:Response) => {
+    
         const { id } = req.params;
         const result = await StudentServices.getSingleStudent(id);
        sendResponse(res, {
@@ -32,11 +28,7 @@ const getSingleStudent = async (req:Request, res:Response, next:NextFunction) =>
             data: result,
         }
         )
-        
-    } catch (error) {
-        next(error);
-    }
-}
+})
 
 export const StudentController = {
     getAllStudent,
