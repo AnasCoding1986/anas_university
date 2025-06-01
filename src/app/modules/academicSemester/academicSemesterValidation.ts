@@ -32,6 +32,22 @@ const createAcademicSemesterValidationSchema = z.object({
     )
 });
 
+const updateAcademicSemesterValidationSchema =
+    createAcademicSemesterValidationSchema.partial().refine((data) => {
+        if (data.name && data.code) {
+            const academicSemesterNameCodeMapper: { [key: string]: string } = {
+                Autumn: '01',
+                Spring: '02',
+                Summer: '03',
+            };
+            return academicSemesterNameCodeMapper[data.name] === data.code;
+        }
+        return true;
+    }, {
+        message: "Invalid semester code for the given semester name",
+    });
+
 export const academicSemesterValidation = {
-    createAcademicSemesterValidationSchema
+    createAcademicSemesterValidationSchema,
+    updateAcademicSemesterValidationSchema
 };
